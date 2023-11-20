@@ -1,8 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import withLoading from '../Components/WithLoading.tsx';
 
-const Home = ({token}) => {
+import NavBar from '../Components/PlayBar';
+import Slider from '../Components/Slider';
+import Filters from '../Components/Filters';
+import Shows from '../Components/Shows';
 
+const Home: React.FC = ({token}) => {
+
+    console.log(token);
     const navigate = useNavigate();
 
     const handleLogout = (event) => {
@@ -18,4 +25,4 @@ const Home = ({token}) => {
 
     )
 }
-export default Home;
+export default withLoading(Home);

@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import supabase  from '../API/client.ts';
+import loginStyles from './Login.module.css';
+import withLoading from '../Components/WithLoading.tsx';
 
-const Login = props=> {
+
+interface formData {
+    email: string;
+    password: string;
+}
+
+const Login: React.FC = props => {
 
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<formData>({
         email: '',
         password: '',
     });
 
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(prevFormData =>{
             return {
                 ...prevFormData,
@@ -20,7 +28,7 @@ const Login = props=> {
         });
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             const {data, error } = await supabase.auth.signInWithPassword(
@@ -43,19 +51,19 @@ const Login = props=> {
 
     return (
         <> 
-        <div className="login-box">
+        <div className={loginStyles.login}>
             <p>Login</p>
             <form>
-                <div className="user-box">
-                    <input required="" name="email" type="text"
+                <div className={loginStyles.user}>
+                    <input required="" name="email" type="text" required
                     value={formData.email}
                     onChange={handleChange}
                     />
                     <label>Email</label>
                 </div>
 
-                <div className="user-box">
-                    <input required="" name="password" type="password"
+                <div className={loginStyles.user}>
+                    <input required="" name="password" type="password" required
                     value={formData.password}
                     onChange={handleChange}
                     />
@@ -68,12 +76,12 @@ const Login = props=> {
                     <span></span>
                     <span></span>
                     <span></span>
-                LogIn
+                Log In
                 </a>
             </form>
-            <p>Don't have an account? <Link to='/signup'><a href="" className="a2">Sign Up!</a></Link></p>
+            <p>Don't have an account? <Link to='/signup'><a href="" className={loginStyles.a2}>Sign Up!</a></Link></p>
         </div>
         </>
     )
 }
-export default Login;
+export default withLoading(Login);

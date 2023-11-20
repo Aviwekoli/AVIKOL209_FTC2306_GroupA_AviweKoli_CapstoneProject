@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Home from './components/Home';
+import Login from './Pages/Login';
+import Signup from './Pages/Signup';
+import Home from './Pages/Home';
 import { Routes, Route } from 'react-router-dom';
  
-const App = () => {
+const App: React.FC = () => {
 
-  // const [ token, setToken] = useState(()=>{
-  //   const localValue = sessionStorage.getItem('TOKEN');
-  //   if (localValue == null) return null;
-  //   return JSON.parse(localValue)
-  // });
-
-  // useEffect(() => {
-  //   sessionStorage.setItem('TOKEN', JSON.stringify(token))
-  // }, [token]);
-
-  const [ token, setToken ] = useState(false);
+  const [ token, setToken ] = useState<boolean>(false);
 
   if(token) {
     sessionStorage.setItem('token', JSON.stringify(token));

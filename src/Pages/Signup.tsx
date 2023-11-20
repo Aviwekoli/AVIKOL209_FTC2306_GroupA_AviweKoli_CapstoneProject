@@ -1,17 +1,24 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import loginStyles from './Login.module.css';
 import supabase  from '../API/client.ts';
+import withLoading from '../Components/WithLoading.tsx';
 
-const Signup = () => {
+interface formData {
+    fullname: string;
+    email: string;
+    password: string;
+}
 
-    const [formData, setFormData] = useState({
+const Signup: React.FC = () => {
+
+    const [formData, setFormData] = useState<formData>({
         fullname: '',
         email: '',
         password: '',
     })
 
-    console.log(formData)
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(prevFormData =>{
             return {
                 ...prevFormData,
@@ -20,7 +27,7 @@ const Signup = () => {
         });
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             const {data, error } = await supabase.auth.signUp(
@@ -42,25 +49,25 @@ const Signup = () => {
 
     return (
         <> 
-        <div className="login-box">
+        <div className={loginStyles.login}>
             <p>Sign Up</p>
             <form>
-                <div className="user-box">
-                    <input required="" name="fullname" type="text"
+                <div className={loginStyles.user}>
+                    <input required="" name="fullname" type="text" required
                     onChange={handleChange}
                     />
                     <label>Full Name</label>
                 </div>
 
-                <div className="user-box">
-                    <input required="" name="email" type="text"
+                <div className={loginStyles.user}>
+                    <input required="" name="email" type="text" required
                     onChange={handleChange}
                     />
                     <label>Email</label>
                 </div>
 
-                <div className="user-box">
-                    <input required="" name="password" type="password"
+                <div className={loginStyles.user}>
+                    <input required="" name="password" type="password" required
                     onChange={handleChange}
                     />
                     <label>Password</label>
@@ -72,12 +79,12 @@ const Signup = () => {
                     <span></span>
                     <span></span>
                     <span></span>
-                Submit
+                Sign Up
                 </a>
             </form>
-            <p>Already have an account? <Link to='/'><a href="" className="a2">Log in!</a></Link></p>
+            <p>Already have an account? <Link to='/'><a href="" className={loginStyles.a2}>Log in!</a></Link></p>
         </div>
         </>
     )
 }
-export default Signup;
+export default withLoading(Signup);
