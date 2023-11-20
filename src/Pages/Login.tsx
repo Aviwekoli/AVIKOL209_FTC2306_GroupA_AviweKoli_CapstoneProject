@@ -50,7 +50,7 @@ const Login: React.FC = props => {
     }
 
     return (
-        <> 
+        <div className={loginStyles.home}> 
         <div className={loginStyles.login}>
             <p>Login</p>
             <form>
@@ -81,7 +81,7 @@ const Login: React.FC = props => {
             </form>
             <p>Don't have an account? <Link to='/signup'><a href="" className={loginStyles.a2}>Sign Up!</a></Link></p>
         </div>
-        </>
+        </div>
     )
 }
 export default withLoading(Login);

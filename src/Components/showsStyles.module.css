@@ -1,0 +1,45 @@
+.preview {
+    border: var(--bg-color);
+    background: var(--bg-color);
+    box-shadow:  0 0.1rem 0.5rem var(--shadow-color);
+    text-align: center;
+    width: 180px;
+    height: 250px;
+    padding: 0.2rem;
+    margin: 0.5rem;
+    border-radius: 10px;
+    transition: all ease .3s;
+    color: var(--text-color);
+    overflow: hidden;
+  }
+
+  .preview:hover {
+    box-shadow: 0px 0px 20px 1px #ffbb763f;
+    border: 1px solid rgba(255, 255, 255, 0.454);
+}
+
+.img {
+    width: 180px;
+    height: 150px;
+    border-radius: 20px;
+}
+
+.title{
+    font-size: 15px;
+    text-align: left;
+    max-width: 150px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Filter buttons*/
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+}
+
+.container button, h3 {
+    margin: 0.5rem;
+}
