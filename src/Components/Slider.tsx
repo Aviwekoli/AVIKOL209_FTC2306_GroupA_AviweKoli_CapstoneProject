@@ -36,6 +36,7 @@ const Slider = () => {
     const Slides = items.slice(0, 10);
   return (
     <>
+      <h2 className={sliderStyles.header}>RECOMMENDED SHOWS</h2>
       <Swiper
         slidesPerView={2}
         spaceBetween={30}

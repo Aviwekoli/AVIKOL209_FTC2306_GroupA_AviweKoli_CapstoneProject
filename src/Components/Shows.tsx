@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import showsStyle from './showsStyles.module.css';
 import Loading from './Loading';
 import Filters from './Filters';
+import genres from '../assets/genres.ts';
 
 interface showsInfo {
     id: string;
@@ -66,7 +67,9 @@ const Shows: React.FC = () => {
             <button onClick={() => handleSort('ztoa')}>Z - A</button>
             <button onClick={() => handleSort('new')}>Most Recent</button>
             <button onClick={() => handleSort('old')}>Least Recent</button>
-            <select type="radio">GENRE</select>
+            <select type="" placeholder="GENRES">
+                {genres.map(genre => <option value="">{genre}</option>)}
+            </select>
         </div>
         {loading? (
             <Loading />
