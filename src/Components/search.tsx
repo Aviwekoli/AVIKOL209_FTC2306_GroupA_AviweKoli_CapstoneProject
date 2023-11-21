@@ -1,6 +1,10 @@
 import React from 'react';
 import searchStyles from './searchStyles.module.css';
 
+interface showDetails {
+    
+}
+
 const Search: React.FC= () => {
 
     return (

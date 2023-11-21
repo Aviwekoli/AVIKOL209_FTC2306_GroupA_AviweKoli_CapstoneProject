@@ -1,4 +1,4 @@
-export const genres = ["All", 
+const genres = ["All", 
 "Personal Growth", 
 "True Crime and Investigative Journalism",
 "History",
@@ -7,4 +7,6 @@ export const genres = ["All",
 "Fiction",
 "News",
 "Kids and Family"
- ];
+];
+
+export default genres;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect} from 'react';
+// import { useHistory } from 'react-router-dom';
+import {useNavigate}  from 'react-router-dom';
+
 import showsStyle from './showsStyles.module.css';
 import Loading from './Loading';
-import Filters from './Filters';
-import genres from '../assets/genres.ts';
+// import genres from '../assets/genres.ts';
 
 interface showsInfo {
     id: string;
@@ -16,8 +18,11 @@ interface showsInfo {
 
 const Shows: React.FC = () => {
 
+    const navigate = useNavigate();
+
     const [shows, setShows] = useState<showsInfo>([]);
     const [sortBy, setSortBy] = useState(null);
+    const [genres, setGenres] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
@@ -29,14 +34,15 @@ const Shows: React.FC = () => {
                 setShows(data);
                 setLoading(false)
             })
+           
         } catch (error) {
             console.error(error.message);
             setLoading(false);
         }
-    }, []);
+    },[]);
 
-    const handleSort = (sortType) => {
-        let sorted;
+    const handleSort = (sortType: string) => {
+        let sorted: showsInfo;
 
         switch(sortType){
         case 'atoz':
@@ -57,8 +63,30 @@ const Shows: React.FC = () => {
 
         setSortBy(sortType);
         setShows(sorted)
-
     }
+
+    const dateFormat = (dateString: string): string => {
+        const options = { month: '2-digit', day: '2-digit', year: 'numeric' };
+        const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+        return formattedDate;
+    }
+
+    const handleShowClick = (showId: string) => {
+        navigate(`/show/${showId}`);
+    }
+
+    const GetGenres = (showId: string) => {
+        useEffect(() => {
+            try {
+               fetch(`https://podcast-api.netlify.app/id/${showId}`)
+               .then(res => res.json())
+               .then(data => setGenres(data.genres))
+            } catch (error) {
+              console.error(error.message)  
+            }
+        })
+    }
+
     return (
         <>
         <div className={showsStyle.container}>
@@ -67,18 +95,25 @@ const Shows: React.FC = () => {
             <button onClick={() => handleSort('ztoa')}>Z - A</button>
             <button onClick={() => handleSort('new')}>Most Recent</button>
             <button onClick={() => handleSort('old')}>Least Recent</button>
-            <select type="" placeholder="GENRES">
+            <h3>GENRES:</h3>
+            <select type="" placeholder="">
                 {genres.map(genre => <option value="">{genre}</option>)}
             </select>
         </div>
         {loading? (
             <Loading />
-        ):(
+            ):(
             shows.map(show =>{
+                const date = dateFormat(show.updated);
                 return (
-                    <button key={show.id} className={showsStyle.preview}>
+                    <button key={show.id} className={showsStyle.preview} onClick={()=>{handleShowClick(show.id)}}>
                     <img src={show.image} alt="Show image" className={showsStyle.img} />
                     <h3 className={showsStyle.title}>{show.title}</h3>
+                    <p className={showsStyle.date}>Updated: {date}</p>
+                    {/* <div>
+                   {show.genres.map(genreIndex =>
+                       <p key={genreIndex}>{genres[genreIndex] || ''}</p>)}
+                   </div> */}
                 </button>
                 )
             })

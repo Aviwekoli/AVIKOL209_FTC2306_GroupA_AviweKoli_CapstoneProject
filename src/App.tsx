@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Home from './Pages/Home';
+import Show from './Pages/Show';
 import { Routes, Route } from 'react-router-dom';
  
 const App: React.FC = () => {
@@ -25,6 +26,7 @@ useEffect(() => {
         <Route path={'/'} element={<Login setToken={setToken} />}/>
         <Route path={'/signup'} element={<Signup />}/>
         {token? <Route path={'/home'} element={<Home token={token}/>}/> : ""}
+        <Route path={'/show/:showId'} element={<Show />} />
       </Routes>
     </>
   )

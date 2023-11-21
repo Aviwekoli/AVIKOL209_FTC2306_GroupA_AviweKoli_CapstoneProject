@@ -55,7 +55,7 @@ const Login: React.FC = props => {
             <p>Login</p>
             <form>
                 <div className={loginStyles.user}>
-                    <input required="" name="email" type="text" required
+                    <input required="" name="email" type="text"
                     value={formData.email}
                     onChange={handleChange}
                     />
@@ -63,7 +63,7 @@ const Login: React.FC = props => {
                 </div>
 
                 <div className={loginStyles.user}>
-                    <input required="" name="password" type="password" required
+                    <input required="" name="password" type="password"
                     value={formData.password}
                     onChange={handleChange}
                     />

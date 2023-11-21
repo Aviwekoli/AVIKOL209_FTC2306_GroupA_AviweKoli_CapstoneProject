@@ -5,7 +5,7 @@ const LoadingComponent = () => {
     const svgStyle = {
       left: '50%',
       top: '50%',
-      position: 'relative',
+      position: 'absolute',
       transform: 'translate(-50%, -50%) matrix(1, 0, 0, 1, 0, 0)',
     };
   
