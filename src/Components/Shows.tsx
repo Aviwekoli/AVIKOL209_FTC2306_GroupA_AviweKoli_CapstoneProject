@@ -84,7 +84,7 @@ const Shows: React.FC = () => {
             } catch (error) {
               console.error(error.message)  
             }
-        })
+        },)
     }
 
     return (
