@@ -4,8 +4,7 @@ import {useNavigate}  from 'react-router-dom';
 
 import showsStyle from './showsStyles.module.css';
 import Loading from './Loading';
-// import genres from '../assets/genres.ts';
-
+import genresObject from '../assets/genres.ts'
 interface showsInfo {
     id: string;
     title: string;
@@ -22,7 +21,7 @@ const Shows: React.FC = () => {
 
     const [shows, setShows] = useState<showsInfo>([]);
     const [sortBy, setSortBy] = useState(null);
-    const [genres, setGenres] = useState([]);
+    // const [genres, setGenres] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
@@ -45,6 +44,9 @@ const Shows: React.FC = () => {
         let sorted: showsInfo;
 
         switch(sortType){
+        case 'all':
+            sorted = [...shows];
+            break;
         case 'atoz':
             sorted = [...shows].sort((a, b) => a.title.localeCompare(b.title));
             break;
@@ -75,30 +77,33 @@ const Shows: React.FC = () => {
         navigate(`/show/${showId}`);
     }
 
-    const GetGenres = (showId: string) => {
-        useEffect(() => {
-            try {
-               fetch(`https://podcast-api.netlify.app/id/${showId}`)
-               .then(res => res.json())
-               .then(data => setGenres(data.genres))
-            } catch (error) {
-              console.error(error.message)  
-            }
-        },)
-    }
+    // const GetGenres = (showId: string) => {
+    //     useEffect(() => {
+    //         try {
+    //            fetch(`https://podcast-api.netlify.app/id/${showId}`)
+    //            .then(res => res.json())
+    //            .then(data => setGenres(data.genres))
+    //         } catch (error) {
+    //           console.error(error.message)  
+    //         }
+    //     },)
+    // }
+
+    const getGenreString = (genreNumber) => genresObject[genreNumber] || 'Unknown';
 
     return (
         <>
         <div className={showsStyle.container}>
             <h3>SORT BY:</h3>
+            <button onClick={()=> handleSort('all')}>ALL</button>
             <button onClick={() => handleSort('atoz')} >A - Z</button>
             <button onClick={() => handleSort('ztoa')}>Z - A</button>
             <button onClick={() => handleSort('new')}>Most Recent</button>
             <button onClick={() => handleSort('old')}>Least Recent</button>
             <h3>GENRES:</h3>
-            <select type="" placeholder="">
+            {/* <select type="" placeholder="" >
                 {genres.map(genre => <option value="">{genre}</option>)}
-            </select>
+            </select> */}
         </div>
         {loading? (
             <Loading />
@@ -110,10 +115,10 @@ const Shows: React.FC = () => {
                     <img src={show.image} alt="Show image" className={showsStyle.img} />
                     <h3 className={showsStyle.title}>{show.title}</h3>
                     <p className={showsStyle.date}>Updated: {date}</p>
-                    {/* <div>
-                   {show.genres.map(genreIndex =>
-                       <p key={genreIndex}>{genres[genreIndex] || ''}</p>)}
-                   </div> */}
+                    {/* <h4>{show.seasons} {show.seasons > 1 ? "Seasons": "Season"} </h4> */}
+                    {show.genres.map((genreNumber, index) => (
+                            <p key={index}>{getGenreString(genreNumber)}</p>
+                    ))}
                 </button>
                 )
             })

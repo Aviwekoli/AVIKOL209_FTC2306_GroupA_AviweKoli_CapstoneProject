@@ -13,8 +13,10 @@
     "@supabase/supabase-js": "^2.38.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-howler": "^5.2.0",
     "react-router-dom": "^6.19.0",
-    "swiper": "^11.0.4"
+    "swiper": "^11.0.4",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

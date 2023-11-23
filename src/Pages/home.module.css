@@ -23,12 +23,12 @@
 
 .extra, .main {
     box-shadow: 0px 0px 20px 1px #ffbb763f;
-    border: 1px solid rgba(255, 255, 255, 0.454);
+    /* border: 1px solid rgba(255, 255, 255, 0.454); */
     padding: 0.25rem;
-    margin: 0.5rem;
+    margin: 0rem;
     margin-bottom: 0;
     overflow: hidden;
-    border-radius: 0.5rem;
+    background: black;
 }
 
 .extra {
@@ -60,8 +60,19 @@
     border: 1px solid rgba(255, 255, 255, 0.454); 
 }
 
+.extra h3 {
+    transition: 0.5s ease-in-out;
+}
+.extra h3:hover {
+    padding: auto;
+    border-radius: 0.5rem;
+    scale: 1.2;
+}
 @media  only screen and (max-width: 480px){
     .extra {
-        display: none;
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 }

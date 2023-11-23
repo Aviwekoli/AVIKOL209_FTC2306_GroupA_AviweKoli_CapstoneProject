@@ -1,0 +1,58 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    border: 0.4rem solid black;
+    padding: 0.2rem;
+}
+.image {
+    width: 150px;
+    height: 200px;
+    padding-right: 1rem;
+}
+
+/* Seasons */
+.preview {
+    border-width: 0;
+    width: 97%;
+    margin: 0.3rem;
+    font-family: Roboto, sans-serif;
+    padding: 0.25rem 0.25rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+    background: black;
+    box-shadow: 0px 0px 20px 1px #ffbb763f;
+    border: 1px solid rgba(255, 255, 255, 0.454);
+    border-radius: 5px;
+    margin: 1rem;
+    margin-bottom: 0;
+}
+
+.previewImage {
+    width: 60px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.previewInfo {
+    color: antiquewhite;
+}
+
+.episodePreview {
+    margin-top: 0.1rem;
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
+    width: 96%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.favorite button {
+    margin: 0.5rem;
+    align-self: last baseline;
+}

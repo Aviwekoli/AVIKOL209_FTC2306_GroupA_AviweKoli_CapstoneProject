@@ -19,6 +19,8 @@ const Home: React.FC = ({token}) => {
             <div className={homeStyles.extra}>
                 <h3>LOGO</h3>
                 < Search />
+                <h3>Favorites</h3>
+                <h3>Recently Listened</h3>
                 < Logout />
             </div>
             < Slider />
