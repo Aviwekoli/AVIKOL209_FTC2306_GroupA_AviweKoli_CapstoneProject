@@ -23,10 +23,10 @@ useEffect(() => {
   return (
     <>
       <Routes>
-        <Route path={'/'} element={<Login setToken={setToken} />}/>
-        {/* <Route path={'/'} element={<Home />}/> */}
+        {/* <Route path={'/'} element={<Login setToken={setToken} />}/> */}
+        <Route path={'/'} element={<Home />}/>
         <Route path={'/signup'} element={<Signup />}/>
-        {token? <Route path={'/home'} element={<Home token={token}/>}/> : ""}
+        {/* {token? <Route path={'/home'} element={<Home token={token}/>}/> : ""} */}
         <Route path={'/show/:showId'} element={<Show />} />
       </Routes>
     </>

@@ -17,14 +17,20 @@ const Home: React.FC = ({token}) => {
     return (
         <div className={homeStyles.body}>
             <div className={homeStyles.extra}>
-                <h3>LOGO</h3>
-                < Search />
-                <h3>Favorites</h3>
-                <h3>Recently Listened</h3>
-                < Logout />
+                <div className={homeStyles.top}>
+                    <h3>LOGO</h3>
+                    < Search />
+                </div>
+                <div className={homeStyles.bottom}>
+                    <button>Go to Favorites</button>
+                    <button> Go to Recently Listened</button>
+                    < Filters />
+                    < Logout />
+                </div>
             </div>
-            < Slider />
+           
             <div className={homeStyles.main}>
+                 < Slider />
                 < Shows />
             </div>
 

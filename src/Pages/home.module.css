@@ -11,43 +11,63 @@
 .body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     min-height: 100vh;
+    width: 100%;
     background: var(--bg-color);
     color: var(--text-color);
     font-family: 'Poppins', sans-serif;
     font-size: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    background: #141416;
 }
 
 .extra, .main {
-    box-shadow: 0px 0px 20px 1px #ffbb763f;
-    /* border: 1px solid rgba(255, 255, 255, 0.454); */
+    /* box-shadow: 0px 0px 20px 1px #ffbb763f;
+    border: 1px solid rgba(255, 255, 255, 0.454); */
     padding: 0.25rem;
     margin: 0rem;
     margin-bottom: 0;
     overflow: hidden;
-    background: black;
 }
 
 .extra {
-    /* width: 100%; */
+    width: 20%;
     /* overflow-wrap: break-word; */
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
+.top {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    background: black;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.bottom {
+    background: black;
+    height: 100%;
+    padding: 0.5rem;
+    border-radius: 2px;
+}
+
+.bottom button {
+    margin: 0.5rem;
+}
 .main {
     align-items: center;
     text-align: center;
     min-height: 100vh;
+    width: 100%;
+    background: black;
 }
 
 .navbar {
-    box-shadow: 0px 0px 20px 1px #ffbb763f;
-    border: 1px solid rgba(255, 255, 255, 0.454); 
+    /* box-shadow: 0px 0px 20px 1px #ffbb763f; */
+    /* border: 1px solid rgba(255, 255, 255, 0.454);  */
     width: 100%;
     height: 5rem;
     margin-bottom: 0.3rem;
@@ -55,24 +75,31 @@
     /* padding: 1rem;
     margin: 1rem;  */
 }
-.side {
-    box-shadow: 0px 0px 20px 1px #ffbb763f;
-    border: 1px solid rgba(255, 255, 255, 0.454); 
-}
 
-.extra h3 {
+.extra button {
     transition: 0.5s ease-in-out;
 }
-.extra h3:hover {
+.extra button:hover {
     padding: auto;
     border-radius: 0.5rem;
-    scale: 1.2;
+    scale: 1.05;
 }
-@media  only screen and (max-width: 480px){
-    .extra {
-        align-self: center;
+
+@media (max-width: 375px) {
+    .body {
         display: flex;
         flex-direction: column;
+    }
+    .extra {
         width: 100%;
     }
+    .bottom {
+        display: none;
+    }
 }
+@media (max-width: 450px) {}
+@media (max-width: 617px) {}
+@media (max-width: 768px) {}
+@media (max-width: 991px) {}
+@media (max-width: 1024px){}
+@media (max-width: 1200px) {}

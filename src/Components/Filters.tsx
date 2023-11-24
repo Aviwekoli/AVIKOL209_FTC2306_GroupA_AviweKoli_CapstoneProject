@@ -16,7 +16,20 @@ const Filters = ({shows}) => {
             <button>Z - A</button>
             <button>Recently</button>
             <button>Least</button>
-            <button>GENRE</button>
+            <select>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            <option value="">All</option>
+            </select>
+            
+
         </div>
         </>
     )

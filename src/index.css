@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
 * {
   scroll-behavior: smooth;
+  box-sizing: border-box;
 }
 
 :root {
@@ -17,8 +18,8 @@
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   min-height: 100vh;
+  /* width: fit-content; */
   background: var(--bg-color);
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
