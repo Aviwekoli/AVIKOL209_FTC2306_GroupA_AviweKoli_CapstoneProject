@@ -11,7 +11,7 @@ const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
  const fuseOptions = {
-    keys: ['title', 'description'],
+    keys: ['title'],
   };
 
   const fuse = new Fuse(shows, fuseOptions);
@@ -19,15 +19,18 @@ const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-
-    const searchResults = fuse.search(query);
-
-    updateShows(searchResults.map((result) => result.item));
+  
+    if (query === '') {
+      updateShows(shows);
+    } else {
+      const searchResults = fuse.search(query);
+      updateShows(searchResults.map((result) => result.item));
+    }
   };
 
     return (
         <div className={searchStyles.search}>
-            <input placeholder="Search..." type="text"
+            <input placeholder="Search shows..." type="text"
             value={searchQuery}
             onChange={handleSearchChange} />
         </div>
