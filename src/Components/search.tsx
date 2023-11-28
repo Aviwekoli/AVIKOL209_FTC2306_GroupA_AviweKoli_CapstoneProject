@@ -20,7 +20,7 @@ const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
     const query = e.target.value;
     setSearchQuery(query);
   
-    if (query === '') {
+    if (query == '') {
       updateShows(shows);
     } else {
       const searchResults = fuse.search(query);
@@ -28,13 +28,13 @@ const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
     }
   };
 
-    return (
-        <div className={searchStyles.search}>
-            <input placeholder="Search shows..." type="text"
-            value={searchQuery}
-            onChange={handleSearchChange} />
-        </div>
+  return (
+      <div className={searchStyles.search}>
+          <input placeholder="Search shows..." type="text"
+          value={searchQuery}
+          onChange={handleSearchChange} />
+      </div>
 
-    )
+  )
 }
 export default Search;

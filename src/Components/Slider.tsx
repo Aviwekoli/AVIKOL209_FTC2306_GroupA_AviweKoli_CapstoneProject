@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
+import { FaPlayCircle } from "react-icons/fa";
 
 // Import Swiper styles
 import 'swiper/css';
@@ -36,9 +36,9 @@ const Slider = () => {
     const Slides = items.slice(0, 10);
   return (
     <>
-      <h2 className={sliderStyles.header}>RECOMMENDED SHOWS</h2>
+      {/* <h2 className={sliderStyles.header}>Recommended for you</h2> */}
       <Swiper
-        slidesPerView={2}
+        slidesPerView={1}
         spaceBetween={30}
         keyboard={{
           enabled: true,
@@ -53,8 +53,20 @@ const Slider = () => {
         {Slides.map(slide => {
             return (
                 <SwiperSlide key={slide.id} className={sliderStyles.slide}>
-                  <h3>{slide.title}</h3>
                   <img src={slide.image} alt="" className={sliderStyles.image} />
+                  <div className={sliderStyles.info} >
+                      <h1>{slide.title}</h1>
+                      <h2>{slide.seasons} {slide.seasons > 1 ? "Seasons": "Season"} </h2>
+                      <button style={{ display: 'inline-flex',
+                      fontSize: '22px',
+                      padding: '0.4rem',
+                      borderRadius: '1.5rem',
+                      border: 'none',
+                      backgroundColor: '#AA336A',
+                      transition: '0.4s ease-in'
+  
+                      }}> GO LISTEN NOW < FaPlayCircle style={{fontSize: '22px', marginLeft:'5px'}}/></button>
+                  </div>
                 </SwiperSlide>
             )
         })}

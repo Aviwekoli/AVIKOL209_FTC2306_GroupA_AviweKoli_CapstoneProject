@@ -53,21 +53,21 @@ const Signup: React.FC = () => {
             <p>Sign Up</p>
             <form>
                 <div className={loginStyles.user}>
-                    <input required="" name="fullname" type="text" required
+                    <input required="" name="fullname" type="text"
                     onChange={handleChange}
                     />
                     <label>Full Name</label>
                 </div>
 
                 <div className={loginStyles.user}>
-                    <input required="" name="email" type="text" required
+                    <input required="" name="email" type="text"
                     onChange={handleChange}
                     />
                     <label>Email</label>
                 </div>
 
                 <div className={loginStyles.user}>
-                    <input required="" name="password" type="password" required
+                    <input required="" name="password" type="password"
                     onChange={handleChange}
                     />
                     <label>Password</label>

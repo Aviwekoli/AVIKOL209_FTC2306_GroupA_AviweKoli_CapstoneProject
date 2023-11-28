@@ -58,10 +58,14 @@ const Filters: React.FC<FiltersProps> = ({ shows, updateShows }) => {
     <>
       <div className={filtersStyles.container}>
         <h3>SORT BY:</h3>
-        <button onClick={() => handleSort('atoz')}>A - Z</button>
-        <button onClick={() => handleSort('ztoa')}>Z - A</button>
-        <button onClick={() => handleSort('new')}>Recently</button>
-        <button onClick={() => handleSort('old')}>Least</button>
+        <div>
+          <button className={filtersStyles.btn} onClick={() => handleSort('atoz')}>A - Z</button>
+          <button className={filtersStyles.btn} onClick={() => handleSort('new')}>Most Recent</button>
+        </div>
+        <div>
+          <button className={filtersStyles.btn} onClick={() => handleSort('ztoa')}>Z - A</button>
+          <button className={filtersStyles.btn} onClick={() => handleSort('old')}>Least Recent</button>
+        </div>
         <select onChange={(e) => handleGenreFilter((e.target.value))}>
           {genresArr.map((genre, index) => (
             <option key={index} value={genre}>

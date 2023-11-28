@@ -7,6 +7,7 @@ import Filters from '../Components/Filters';
 import Shows from '../Components/Shows';
 import Logout from '../Components/Logout';
 import Search from '../Components/search';
+import Fav from '../Components/Favorites';
 import genresObject from '../assets/genres.ts';
 
 import homeStyles from './home.module.css';
@@ -55,14 +56,30 @@ const Home: React.FC = ({token}) => {
       };
 
     return (
-        <div className={homeStyles.body}>
-            <div className={homeStyles.sidebar}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingLeft: '200px', top: '50px'}}>
+            <div >
+                 < Slider />
+                {loading? (
+                    < Loading />
+                ): (
+                    < Shows shows={shows} 
+                />
+                )}
+            </div>
+
+        </div>
+
+    )
+}
+export default withLoading(Home);
+
+            {/* <div className={homeStyles.sidebar}>
                 <div className={homeStyles.top}>
-                    <h3>LOGO</h3>
+                    <h2>EcoCast</h2>
                     < Search shows={shows} updateShows={handleSearchUpdate} />
                 </div>
                 <div className={homeStyles.bottom}>
-                    <button>Go to Favorites</button>
+                    <button> Go to Favorites</button>
                     <button> Go to Recently Listened</button>
                     { loading ? (
                         < Loading />
@@ -73,19 +90,4 @@ const Home: React.FC = ({token}) => {
                     }
                     < Logout />
                 </div>
-            </div>
-           
-            <div className={homeStyles.main}>
-                 < Slider />
-                {loading? (
-                    < Loading />
-                ): (
-                    < Shows shows={shows}/>
-                )}
-            </div>
-
-        </div>
-
-    )
-}
-export default withLoading(Home);
+            </div> */}

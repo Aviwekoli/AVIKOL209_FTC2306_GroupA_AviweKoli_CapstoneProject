@@ -1,16 +1,17 @@
 .search {
     display: inline-block;
     position: relative;
-
+    padding: 0;
+    margin: 0;
   }
   
   .search input[type="text"] {
     color: #fff;
-    width: 200px;
+    width: 500px;
     padding: 10px;
     border: none;
-    background-color: transparent;
-    border-radius: 20px;
+    background-color: #141416;
+    border-radius: 10px;
     /* box-shadow: 0px 0px 20px 1px #ffbb763f; */
     border: 1px solid rgba(255, 255, 255, 0.454);
   }

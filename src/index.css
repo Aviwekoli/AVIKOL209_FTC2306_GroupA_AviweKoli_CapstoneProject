@@ -20,7 +20,7 @@ body {
   padding: 0;
   min-height: 100vh;
   /* width: fit-content; */
-  background: var(--bg-color);
+  background: var(--bg-color-2);
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
   font-size: 62.5%;

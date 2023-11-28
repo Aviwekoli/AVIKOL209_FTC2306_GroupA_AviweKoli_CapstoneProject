@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Season from './Season';
 import Episode from './Episodes';
 
-// import withLoading from '../Components/WithLoading.tsx';
+import withLoading from '../Components/WithLoading.tsx';
 // import Loading from './Loading';
 
 
@@ -21,22 +21,12 @@ interface Details {
     updated: string;
 }
 
-const Show: React.FC = () => { 
+const Show: React.FC<{ onPlay: () => void; onStop: () => void }> = ({ onPlay, onStop, isPlaying }) => {
 
     const { showId } = useParams();
 
     const [show, setShow] = useState<Details>([]);
     const [openSeasons, setOpenSeasons] = useState<{ [key: number]: boolean }>({});
-
-    // useEffect(() => {
-    //     try {
-    //       fetch(`https://podcast-api.netlify.app/id/${showId}`)
-    //       .then(res => res.json())
-    //       .then(data => setShow(data))
-    //     } catch (error) {
-    //         console.error(error.message)
-    //     }
-    // },[showId]);
 
     useEffect(()=>{
         const fetchFunc = async () => {
@@ -44,6 +34,13 @@ const Show: React.FC = () => {
                 const response = await fetch(`https://podcast-api.netlify.app/id/${showId}`);
                 const data = await response.json();
                 setShow(data)
+
+                // Initialize openSeasons state based on the number of seasons
+                const initialOpenSeasons = {};
+                data.seasons.forEach((season, index) => {
+                  initialOpenSeasons[index + 1] = false; // Assuming season numbers start from 1
+                });
+                setOpenSeasons(initialOpenSeasons);
             } catch (error) {
                 console.error(error.message)
             }
@@ -61,31 +58,38 @@ const Show: React.FC = () => {
     const handleLike = () => {};
 
     return (
-        <>
+        <div style={{paddingLeft: '200px'}}>
           <div className={showStyle.header}>
-            <img src={show.image} alt="Show image" className={showStyle.image} />
             <div>
               <h2>{show.title}</h2>
               <p>{show.description}</p>
               <h4>{show.seasons ? `${show.seasons.length} Seasons` : 'No Seasons available'}</h4>
             </div>
+            <img src={show.image} alt="Show image" className={showStyle.image} />
           </div>
-          {show.seasons ? show.seasons.map(season => 
+          {show.seasons ? show.seasons.map((season, index) => 
             <div key={uuidv4()}>
                 < Season 
                 season={season}
-                handleSeason={() => handleSeason(season.season)}
+                onPlay={onPlay}
+                onStop={onStop}
+                handleSeason={() => handleSeason(index + 1)}
+                isOpen={openSeasons[index + 1]}
                 />
-                {openSeasons[season.season] ? season.episodes.map(episode =>
+                {openSeasons[index + 1] ? season.episodes.map(episode =>
                     <div key={uuidv4()}>
                         < Episode 
                         episode={episode}
+                        season={season}
+                        onPlay={onPlay}
+                        onStop={onStop}
                         handleLike={handleLike}
+                        isPlaying={isPlaying}
                         />
                     </div> ): null}
             </div>
                ): null}
-        </>
+        </div>
       )
 }
-export default Show;
+export default withLoading(Show);
