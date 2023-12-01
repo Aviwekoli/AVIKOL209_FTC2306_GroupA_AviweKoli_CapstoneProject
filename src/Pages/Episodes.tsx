@@ -38,104 +38,6 @@ const Episode: React.FC<{ episode: EpisodeInfo; season: SeasonInfo; onPlay: () =
 
       const [isFavorite, setIsFavorite] = useState(false);
 
-      useEffect(() => {
-        // Check if the episode is in favorites when the component mounts
-        checkFavorite();
-      }, []);
-      const checkFavorite = async () => {
-        if (!token || !token.user || !token.user.id) {
-          // Ensure the user is authenticated
-          console.error('User not authenticated');
-          return;
-        }
-      
-        try {
-          // Make a request to Supabase to check if the specific episode is in favorites
-          const { data, error } = await supabase
-            .from('favorites')
-            .select('episodeKey')
-            .eq('episodeKey', episodeKey)
-            .eq('id', token.user.id);
-      
-          console.log('Data from checkFavorite:', data);
-          console.log('Error from checkFavorite:', error);
-      
-          // Update the state based on the result
-          setIsFavorite(!!data && data.length > 0);
-        } catch (error) {
-          console.error('Error in checkFavorite:', error.message);
-        }
-      };
-      
-
-      const handleFavorites = async () => {
-        if (!token || !token.user || !token.user.id) {
-          // Ensure the user is authenticated
-          console.error('User not authenticated');
-          return;
-        }
-      
-        if (isFavorite) {
-          // If the episode is already a favorite, do nothing
-          console.log('Episode is already in favorites');
-          return;
-        }
-        try {
-          // Fetch the current list of favorites for the user
-          const { data: currentFavorites, error: fetchError } = await supabase
-            .from('favorites')
-            .select('*')
-            .eq('id', token.user.id);
-      
-          if (fetchError) {
-            console.error('Error fetching current favorites:', fetchError.message);
-            return;
-          }
-      
-          // Check if the episode is already in favorites
-          const existingFavoriteIndex = currentFavorites.findIndex(
-            (fav) => fav.episodeKey === episodeKey
-          );
-      
-          if (existingFavoriteIndex !== -1) {
-            // Remove the existing entry with the same episodeKey
-            currentFavorites.splice(existingFavoriteIndex, 1);
-          }
-      
-          // Add the new episode to the existing list of favorites
-          const updatedFavorites = [
-            ...currentFavorites,
-            {
-              id: token.user.id,
-              episodeKey: episodeKey,
-              likedTimestamp: Date.now(),
-              season: season.season,
-              episode: episode.episode,
-              show: show,
-              updated: updated,
-              image: image,
-              title: episode.title,
-            },
-          ];
-      
-          // Update the favorites table with the updated list
-          const { error: updateError } = await supabase
-            .from('favorites')
-            .upsert(updatedFavorites, { returning: 'minimal' });
-      
-          if (updateError) {
-            console.error('Error updating favorites:', updateError.message);
-            return;
-          }
-      
-          // Toggle the isFavorite state
-          setIsFavorite(true);
-        } catch (error) {
-          console.error('Error adding favorite:', error.message);
-        }
-      };
-      
-
       // const [isFavorite, setIsFavorite] = useState(() => {
       //   const likedEpisodes = localStorage.getItem('likedEpisodes');
       //   return likedEpisodes ? JSON.parse(likedEpisodes).includes(episode.episode) : false;
@@ -155,35 +57,35 @@ const Episode: React.FC<{ episode: EpisodeInfo; season: SeasonInfo; onPlay: () =
     setIsPlaying(false);
   }; 
  
-  // console.log(episodeKey)
-  // const handleFavorites = () => {
-  //   const likedEpisodes = JSON.parse(localStorage.getItem('likedEpisodes') || '[]');
-  //   const currentTimestamp = Date.now();
+  console.log(episodeKey)
+  const handleFavorites = () => {
+    const likedEpisodes = JSON.parse(localStorage.getItem('likedEpisodes') || '[]');
+    const currentTimestamp = Date.now();
     
-  //   if (isFavorite) {
-  //     // Remove from favorites
-  //     const updatedLikedEpisodes = likedEpisodes.filter((key) => key.episodeKey !== episodeKey);
-  //     localStorage.setItem('likedEpisodes', JSON.stringify(updatedLikedEpisodes));
-  //   } else {
-  //     // Add to favorites with timestamp
-  //     const episodeWithTimestamp = {
-  //       ...episode,
-  //       likedTimestamp: currentTimestamp,
-  //       season: season.season,
-  //       episode: episode.episode,
-  //       show: show,
-  //       updated: updated,
-  //       image: image,
-  //       episodeKey: episodeKey,
-  //     };
+    if (isFavorite) {
+      // Remove from favorites
+      const updatedLikedEpisodes = likedEpisodes.filter((key) => key.episodeKey !== episodeKey);
+      localStorage.setItem('likedEpisodes', JSON.stringify(updatedLikedEpisodes));
+    } else {
+      // Add to favorites with timestamp
+      const episodeWithTimestamp = {
+        ...episode,
+        likedTimestamp: currentTimestamp,
+        season: season.season,
+        episode: episode.episode,
+        show: show,
+        updated: updated,
+        image: image,
+        episodeKey: episodeKey,
+      };
   
-  //     likedEpisodes.push(episodeWithTimestamp);
-  //     localStorage.setItem('likedEpisodes', JSON.stringify(likedEpisodes));
-  //   }
+      likedEpisodes.push(episodeWithTimestamp);
+      localStorage.setItem('likedEpisodes', JSON.stringify(likedEpisodes));
+    }
   
-  //   // Toggle the isFavorite state
-  //   setIsFavorite(!isFavorite);
-  // };
+    // Toggle the isFavorite state
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <div className={showStyles.episodeContainer} data-episode={episode.episode}>
@@ -220,6 +122,8 @@ const Episode: React.FC<{ episode: EpisodeInfo; season: SeasonInfo; onPlay: () =
 };
 
 export default Episode;
+
+
 // const handleFavorites = () => {
 //   setIsFavorite((prevIsFavorite) => {
 //     const newLikedEpisodes = prevIsFavorite
@@ -382,3 +286,101 @@ export default Episode;
   //   // Toggle the isFavorite state
   //   setIsFavorite(!isFavorite);
   // };
+  
+  // fetch API
+        // useEffect(() => {
+      //   // Check if the episode is in favorites when the component mounts
+      //   checkFavorite();
+      // }, []);
+      // const checkFavorite = async () => {
+      //   if (!token || !token.user || !token.user.id) {
+      //     // Ensure the user is authenticated
+      //     console.error('User not authenticated');
+      //     return;
+      //   }
+      
+      //   try {
+      //     // Make a request to Supabase to check if the specific episode is in favorites
+      //     const { data, error } = await supabase
+      //       .from('favorites')
+      //       .select('episodeKey')
+      //       .eq('episodeKey', episodeKey)
+      //       .eq('id', token.user.id);
+      
+      //     console.log('Data from checkFavorite:', data);
+      //     console.log('Error from checkFavorite:', error);
+      
+      //     // Update the state based on the result
+      //     setIsFavorite(!!data && data.length > 0);
+      //   } catch (error) {
+      //     console.error('Error in checkFavorite:', error.message);
+      //   }
+      // };
+      
+
+      // const handleFavorites = async () => {
+      //   if (!token || !token.user || !token.user.id) {
+      //     // Ensure the user is authenticated
+      //     console.error('User not authenticated');
+      //     return;
+      //   }
+      
+      //   if (isFavorite) {
+      //     // If the episode is already a favorite, do nothing
+      //     console.log('Episode is already in favorites');
+      //     return;
+      //   }
+      //   try {
+      //     // Fetch the current list of favorites for the user
+      //     const { data: currentFavorites, error: fetchError } = await supabase
+      //       .from('favorites')
+      //       .select('*')
+      //       .eq('id', token.user.id);
+      
+      //     if (fetchError) {
+      //       console.error('Error fetching current favorites:', fetchError.message);
+      //       return;
+      //     }
+      
+      //     // Check if the episode is already in favorites
+      //     const existingFavoriteIndex = currentFavorites.findIndex(
+      //       (fav) => fav.episodeKey === episodeKey
+      //     );
+      
+      //     if (existingFavoriteIndex !== -1) {
+      //       // Remove the existing entry with the same episodeKey
+      //       currentFavorites.splice(existingFavoriteIndex, 1);
+      //     }
+      
+      //     // Add the new episode to the existing list of favorites
+      //     const updatedFavorites = [
+      //       ...currentFavorites,
+      //       {
+      //         id: token.user.id,
+      //         episodeKey: episodeKey,
+      //         likedTimestamp: Date.now(),
+      //         season: season.season,
+      //         episode: episode.episode,
+      //         show: show,
+      //         updated: updated,
+      //         image: image,
+      //         title: episode.title,
+      //       },
+      //     ];
+      
+      //     // Update the favorites table with the updated list
+      //     const { error: updateError } = await supabase
+      //       .from('favorites')
+      //       .upsert(updatedFavorites, { returning: 'minimal' });
+      
+      //     if (updateError) {
+      //       console.error('Error updating favorites:', updateError.message);
+      //       return;
+      //     }
+      
+      //     // Toggle the isFavorite state
+      //     setIsFavorite(true);
+      //   } catch (error) {
+      //     console.error('Error adding favorite:', error.message);
+      //   }
+      // };

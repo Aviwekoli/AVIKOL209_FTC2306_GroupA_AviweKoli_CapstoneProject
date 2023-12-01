@@ -10,141 +10,73 @@ import fav from '../assets/favorites.png'
 
 
 const Favorites: React.FC = () => {
-  const [favoriteEpisodesData, setFavoriteEpisodesData] = useState([]);
+ 
+  const [favoriteEpisodes, setFavoriteEpisodes] = useState<string[]>([]);
   const [selectedSortOption, setSelectedSortOption] = useState<string>('original'); // Default sort option
 
-  useEffect(() => {
-    fetchFavorites();
-  }, []); // Empty dependency array ensures this effect runs once on component mount
+  const favoriteEpisodesData = JSON.parse(localStorage.getItem('likedEpisodes') || '[]');
 
-  const fetchFavorites = async () => {
-    try {
-      const { data, error } = await supabase.from('favorites').select('*');
-      if (error) {
-        throw error;
-      }
 
-      setFavoriteEpisodesData(data || []);
-    } catch (error) {
-      console.error('Error fetching favorites:', error.message);
+console.log(favoriteEpisodesData)
+const groupEpisodesByShow = () => {
+  const groupedEpisodes = {};
+  favoriteEpisodesData.forEach((episode) => {
+    const show = episode.show;
+    if (!groupedEpisodes[show]) {
+      groupedEpisodes[show] = [];
     }
-  };
+    groupedEpisodes[show].push(episode);
+  });
+  return groupedEpisodes;
+};
 
-  const groupEpisodesByShow = () => {
-    const groupedEpisodes = {};
-    favoriteEpisodesData.forEach((episode) => {
-      const show = episode.show;
-      if (!groupedEpisodes[show]) {
-        groupedEpisodes[show] = [];
-      }
-      groupedEpisodes[show].push(episode);
-    });
-    return groupedEpisodes;
-  };
 
-  const sortEpisodes = (groupedEpisodes) => {
-    const sortedShows = Object.keys(groupedEpisodes).sort((a, b) => {
-      if (selectedSortOption === 'original') {
-        return 0; // No sorting, keep the original order
-      } else if (selectedSortOption === 'name-asc') {
-        return a.localeCompare(b);
-      } else if (selectedSortOption === 'name-desc') {
-        return b.localeCompare(a);
-      } else if (selectedSortOption === 'recent') {
-        // Assuming `updated` is a timestamp, adjust the comparison accordingly
-        return groupedEpisodes[b][0].updated - groupedEpisodes[a][0].updated;
-      } else if (selectedSortOption === 'least-recent') {
-        return groupedEpisodes[a][0].updated - groupedEpisodes[b][0].updated;
-      }
-      return 0;
-    });
-
-    const sortedEpisodes = {};
-    sortedShows.forEach((show) => {
-      sortedEpisodes[show] = groupedEpisodes[show].sort((a, b) => a.updated - b.updated); // Sort episodes within each show
-    });
-
-    return sortedEpisodes;
-  };
-
-  const handleRemove = async (episodeKey) => {
-    try {
-      await supabase.from('favorites').delete().eq('episodeKey', episodeKey);
-      // Fetch favorites again after deletion
-      fetchFavorites();
-    } catch (error) {
-      console.error('Error removing favorite:', error.message);
+const sortEpisodes = (groupedEpisodes) => {
+  const sortedShows = Object.keys(groupedEpisodes).sort((a, b) => {
+    if (selectedSortOption === 'original') {
+      return 0; // No sorting, keep the original order
+    } else if (selectedSortOption === 'name-asc') {
+      return a.localeCompare(b);
+    } else if (selectedSortOption === 'name-desc') {
+      return (b).localeCompare(a);
+    } else if (selectedSortOption === 'recent') {
+      // Assuming `updated` is a timestamp, adjust the comparison accordingly
+      return groupedEpisodes[b][0].updated - groupedEpisodes[a][0].updated;
+    } else if (selectedSortOption === 'least-recent') {
+      return groupedEpisodes[a][0].updated - groupedEpisodes[b][0].updated;
     }
-  };
+    return 0;
+  });
 
-  const handleSortChange = (event) => {
-    setSelectedSortOption(event.target.value);
-  };
+  const sortedEpisodes = {};
+  sortedShows.forEach((show) => {
+    sortedEpisodes[show] = groupedEpisodes[show].sort((a, b) => a.updated - b.updated); // Sort episodes within each show
+  });
 
-  const groupedEpisodes = groupEpisodesByShow();
-  const sortedEpisodes = sortEpisodes(groupedEpisodes);
-//   const [favoriteEpisodes, setFavoriteEpisodes] = useState<string[]>([]);
-//   const [selectedSortOption, setSelectedSortOption] = useState<string>('original'); // Default sort option
-
-//   const favoriteEpisodesData = JSON.parse(localStorage.getItem('likedEpisodes') || '[]');
+  return sortedEpisodes;
+};
 
 
-// console.log(favoriteEpisodesData)
-// const groupEpisodesByShow = () => {
-//   const groupedEpisodes = {};
-//   favoriteEpisodesData.forEach((episode) => {
-//     const show = episode.show;
-//     if (!groupedEpisodes[show]) {
-//       groupedEpisodes[show] = [];
-//     }
-//     groupedEpisodes[show].push(episode);
-//   });
-//   return groupedEpisodes;
-// };
+const handleRemove = (episodeKeyy) => {
+  console.log(episodeKeyy);
+  const updatedFavorites = favoriteEpisodesData.filter((episode) => episode.episodeKey !== episodeKeyy);
+  setFavoriteEpisodes(updatedFavorites);
+  localStorage.setItem('likedEpisodes', JSON.stringify(updatedFavorites));
+};
+
+const handleSortChange = (event) => {
+  setSelectedSortOption(event.target.value);
+};
+
+const groupedEpisodes = groupEpisodesByShow();
+const sortedEpisodes = sortEpisodes(groupedEpisodes);
 
 
-// const sortEpisodes = (groupedEpisodes) => {
-//   const sortedShows = Object.keys(groupedEpisodes).sort((a, b) => {
-//     if (selectedSortOption === 'original') {
-//       return 0; // No sorting, keep the original order
-//     } else if (selectedSortOption === 'name-asc') {
-//       return a.localeCompare(b);
-//     } else if (selectedSortOption === 'name-desc') {
-//       return (b).localeCompare(a);
-//     } else if (selectedSortOption === 'recent') {
-//       // Assuming `updated` is a timestamp, adjust the comparison accordingly
-//       return groupedEpisodes[b][0].updated - groupedEpisodes[a][0].updated;
-//     } else if (selectedSortOption === 'least-recent') {
-//       return groupedEpisodes[a][0].updated - groupedEpisodes[b][0].updated;
-//     }
-//     return 0;
-//   });
-
-//   const sortedEpisodes = {};
-//   sortedShows.forEach((show) => {
-//     sortedEpisodes[show] = groupedEpisodes[show].sort((a, b) => a.updated - b.updated); // Sort episodes within each show
-//   });
-
-//   return sortedEpisodes;
-// };
-
-
-// const handleRemove = (episodeKeyy) => {
-//   console.log(episodeKeyy);
-//   const updatedFavorites = favoriteEpisodesData.filter((episode) => episode.episodeKey !== episodeKeyy);
-//   setFavoriteEpisodes(updatedFavorites);
-//   localStorage.setItem('likedEpisodes', JSON.stringify(updatedFavorites));
-// };
-
-// const handleSortChange = (event) => {
-//   setSelectedSortOption(event.target.value);
-// };
-
-// const groupedEpisodes = groupEpisodesByShow();
-// const sortedEpisodes = sortEpisodes(groupedEpisodes);
-
-// console.log(groupedEpisodes)
-// console.log(sortedEpisodes)
+const dateFormat = (dateString: string): string => {
+  const options = { day: '2-digit', month: 'short', year: 'numeric' };
+  const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+  return formattedDate;
+};
 return (
   <div style={{paddingLeft:'200px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
     <div className={favorites.headerr}>
@@ -174,7 +106,7 @@ return (
                 <th>#</th>
                 <th style={{width: '350px'}}>Episode Title</th>
                 <th>Date Updated</th>
-                <th>Time Added</th>
+                <th>Date & Time Added</th>
                 <th></th>
               </tr>
             </thead>
@@ -190,8 +122,8 @@ return (
                       {episode.title}
                     </div>
                   </td>
-                  <td>{episode.updated}</td>
-                  <td>{new Date(episode.likedTimestamp).toLocaleTimeString()}</td>
+                  <td>{dateFormat(episode.updated)}</td>
+                  <td>{dateFormat(new Date(episode.likedTimestamp))} ({new Date(episode.likedTimestamp).toLocaleTimeString()})</td>
                   <td>
                     <button style={{background: 'transparent', border: 'none', fontSize: '30px'}} onClick={() => handleRemove(episode.episodeKey)}>{<FaHeart color="red" />}</button>
                   </td>
@@ -282,3 +214,78 @@ export default Favorites;
   //   const likedEpisodes = JSON.parse(localStorage.getItem('likedEpisodes') || '[]');
   //   setFavoriteEpisodes(likedEpisodes);
   // }, []);
+
+  /// supabase
+   // const [favoriteEpisodesData, setFavoriteEpisodesData] = useState([]);
+  // const [selectedSortOption, setSelectedSortOption] = useState<string>('original'); // Default sort option
+
+  // useEffect(() => {
+  //   fetchFavorites();
+  // }, []); // Empty dependency array ensures this effect runs once on component mount
+
+  // const fetchFavorites = async () => {
+  //   try {
+  //     const { data, error } = await supabase.from('favorites').select('*');
+  //     if (error) {
+  //       throw error;
+  //     }
+
+  //     setFavoriteEpisodesData(data || []);
+  //   } catch (error) {
+  //     console.error('Error fetching favorites:', error.message);
+  //   }
+  // };
+
+  // const groupEpisodesByShow = () => {
+  //   const groupedEpisodes = {};
+  //   favoriteEpisodesData.forEach((episode) => {
+  //     const show = episode.show;
+  //     if (!groupedEpisodes[show]) {
+  //       groupedEpisodes[show] = [];
+  //     }
+  //     groupedEpisodes[show].push(episode);
+  //   });
+  //   return groupedEpisodes;
+  // };
+
+  // const sortEpisodes = (groupedEpisodes) => {
+  //   const sortedShows = Object.keys(groupedEpisodes).sort((a, b) => {
+  //     if (selectedSortOption === 'original') {
+  //       return 0; // No sorting, keep the original order
+  //     } else if (selectedSortOption === 'name-asc') {
+  //       return a.localeCompare(b);
+  //     } else if (selectedSortOption === 'name-desc') {
+  //       return b.localeCompare(a);
+  //     } else if (selectedSortOption === 'recent') {
+  //       // Assuming `updated` is a timestamp, adjust the comparison accordingly
+  //       return groupedEpisodes[b][0].updated - groupedEpisodes[a][0].updated;
+  //     } else if (selectedSortOption === 'least-recent') {
+  //       return groupedEpisodes[a][0].updated - groupedEpisodes[b][0].updated;
+  //     }
+  //     return 0;
+  //   });
+
+  //   const sortedEpisodes = {};
+  //   sortedShows.forEach((show) => {
+  //     sortedEpisodes[show] = groupedEpisodes[show].sort((a, b) => a.updated - b.updated); // Sort episodes within each show
+  //   });
+
+  //   return sortedEpisodes;
+  // };
+
+  // const handleRemove = async (episodeKey) => {
+  //   try {
+  //     await supabase.from('favorites').delete().eq('episodeKey', episodeKey);
+  //     // Fetch favorites again after deletion
+  //     fetchFavorites();
+  //   } catch (error) {
+  //     console.error('Error removing favorite:', error.message);
+  //   }
+  // };
+
+  // const handleSortChange = (event) => {
+  //   setSelectedSortOption(event.target.value);
+  // };
+
+  // const groupedEpisodes = groupEpisodesByShow();
+  // const sortedEpisodes = sortEpisodes(groupedEpisodes);
