@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import withLoading from '../Components/WithLoading.tsx';
 import Loading from '../Components/Loading'
 
+import Navbar from '../Components/Navbar';
 import Slider from '../Components/Slider';
 import Filters from '../Components/Filters';
 import Shows from '../Components/Shows';
@@ -23,6 +24,8 @@ interface showsInfo {
 }
 
 const Home: React.FC = ({token}) => {
+
+    console.log(token);
 
     const [shows, setShows] = useState<showsInfo>([]);
     const [loading, setLoading] = useState<boolean>(true)
@@ -58,11 +61,13 @@ const Home: React.FC = ({token}) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingLeft: '200px', top: '50px'}}>
             <div >
+                < Navbar shows={shows} updateShows={updateShows} />
                  < Slider />
+                 < Filters shows={shows} updateShows={updateShows}/>
                 {loading? (
                     < Loading />
                 ): (
-                    < Shows shows={shows} 
+                    < Shows shows={shows} token={token}
                 />
                 )}
             </div>

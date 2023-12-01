@@ -1,7 +1,7 @@
 import React from 'react';
 import Search from './search'
 
-const Navbar = () => {
+const Navbar = ({shows, updateShows}) => {
     return (
         <div
           style={{
@@ -15,12 +15,11 @@ const Navbar = () => {
             position: 'fixed',
             top: '0',
             zIndex: '999',
-            paddingLeft: '205px'
+            paddingLeft: '5px'
           }}
         >
           {/* Search bar content goes here */}
-          < Search />
-          <h2>Nav bar top</h2>
+          < Search shows={shows} updateShows={updateShows} />
           {/* Add your search bar content here */}
         </div>
       );

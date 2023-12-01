@@ -12,11 +12,14 @@ interface SeasonInfo {
 
 // const Season: React.FC = ({season, handleSeason, isOpen}) => {
     const Season: React.FC<{ season: SeasonInfo; onPlay: () => void; onStop: () => void }> = ({
+        token,
         season,
-        onPlay,
+        show,
+        updated,
+        image,
         handleSeason,
-        onStop,
         isOpen,
+        handlePlayClick
       }) => {
 
     return (

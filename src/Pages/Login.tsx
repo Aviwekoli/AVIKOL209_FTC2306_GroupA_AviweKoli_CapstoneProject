@@ -41,7 +41,6 @@ const Login: React.FC = props => {
             // console.log(data)
             props.setToken(data);
             navigate('/home');
-
         } catch (error) {
             console.error(error)
             alert(error)
@@ -49,6 +48,23 @@ const Login: React.FC = props => {
         }
     }
 
+        // try {
+        //     const { data, error } = await supabase.from('favorites').select().eq('user_id', user.id);
+        
+        //     if (error) {
+        //       throw error;
+        //     }
+        
+        //     // Store the user's favorites in the component's state
+        //     props.setUserFavorites(data);
+        
+        //     // Continue with navigation or other actions
+        //     navigate('/home');
+        //   } catch (error) {
+        //     console.error('Error retrieving user favorites:', error);
+        //     alert('Error retrieving user favorites');
+        //   }
+    //}
     return (
         <div className={loginStyles.home}> 
         <div className={loginStyles.login}>

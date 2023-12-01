@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate }  from 'react-router-dom';
 
 import showsStyle from './showsStyles.module.css';
-// import Loading from './Loading';
 
-const Shows: React.FC = ( {shows}) => {
+const Shows: React.FC = ( {shows, token}) => {
 
     const navigate = useNavigate();
 
@@ -14,8 +13,9 @@ const Shows: React.FC = ( {shows}) => {
         return formattedDate;
     };
     const handleShowClick = (showId: string) => {
-        navigate(`/show/${showId}`);
+        navigate(`/show/${showId}`, {state: {token}});
     }
+    
 
     return (
         < div className={showsStyle.showsContainer}>

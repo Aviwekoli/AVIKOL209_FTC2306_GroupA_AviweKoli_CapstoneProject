@@ -1,5 +1,6 @@
 import React, {useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
+import { usePalette } from 'react-palette';
 import { v4 as uuidv4 } from 'uuid';
 import Season from './Season';
 import Episode from './Episodes';
@@ -21,12 +22,17 @@ interface Details {
     updated: string;
 }
 
-const Show: React.FC<{ onPlay: () => void; onStop: () => void }> = ({ onPlay, onStop, isPlaying }) => {
-
+const Show: React.FC<{ onPlay: () => void; onStop: () => void }> = ({handlePlayClick}) => {
+    const location = useLocation();
+    const { token } = location.state;
     const { showId } = useParams();
 
     const [show, setShow] = useState<Details>([]);
     const [openSeasons, setOpenSeasons] = useState<{ [key: number]: boolean }>({});
+
+    useEffect(() => {
+      console.log('Token:', token);
+    }, [token]);
 
     useEffect(()=>{
         const fetchFunc = async () => {
@@ -55,36 +61,68 @@ const Show: React.FC<{ onPlay: () => void; onStop: () => void }> = ({ onPlay, on
         }));
     };
 
-    const handleLike = () => {};
+    // const handleLike = () => {};
 
+    const formattedGenres = show.genres
+    ? show.genres.reduce((acc, genre, index, array) => {
+        if (genre !== 'All') {
+          if (index === array.length - 1) {
+            return acc ? acc + ` and ${genre}` : `${genre}`;
+          } else {
+            return acc ? acc + `, ${genre}` : `${genre}`;
+          }
+        }
+        return acc;
+      }, '')
+    : '';
+
+    const dateFormat = (dateString: string): string => {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+      return formattedDate;
+    };
+ 
     return (
         <div style={{paddingLeft: '200px'}}>
+          <div style={{position: 'sticky', top: '0', textAlign:'center', background:'rgb(9, 9, 17)', marginTop: '0', fontSize:'small'}}><h1>{show.title}</h1></div>
           <div className={showStyle.header}>
-            <div>
-              <h2>{show.title}</h2>
-              <p>{show.description}</p>
-              <h4>{show.seasons ? `${show.seasons.length} Seasons` : 'No Seasons available'}</h4>
+            <div className={showStyle.inner}>
+              <div className={showStyle.details}>
+                <p >{show.description}</p>
+                <h2><span>Seasons: </span>{show.seasons? show.seasons.length: null}</h2>
+                <h2><span>Genres: </span>{formattedGenres}</h2>
+                <h2><span>Updated: </span>{dateFormat(show.updated)}</h2>
+              </div>
+              <img src={show.image} alt="Show image" className={showStyle.image} />
             </div>
-            <img src={show.image} alt="Show image" className={showStyle.image} />
           </div>
           {show.seasons ? show.seasons.map((season, index) => 
             <div key={uuidv4()}>
                 < Season 
+                handlePlayClick={handlePlayClick}
+                token={token}
                 season={season}
-                onPlay={onPlay}
-                onStop={onStop}
+                show={show}
+                updated={show.updated}
+                //onPlay={onPlay}
+                //onStop={onStop}
                 handleSeason={() => handleSeason(index + 1)}
                 isOpen={openSeasons[index + 1]}
                 />
                 {openSeasons[index + 1] ? season.episodes.map(episode =>
                     <div key={uuidv4()}>
                         < Episode 
+                        handlePlayClick={handlePlayClick}
+                        token={token}
                         episode={episode}
                         season={season}
-                        onPlay={onPlay}
-                        onStop={onStop}
-                        handleLike={handleLike}
-                        isPlaying={isPlaying}
+                        show={show.title}
+                        image={season.image}
+                        updated={show.updated}
+                        //onPlay={onPlay}
+                        //onStop={onStop}
+                        //handleLike={handleLike}
+                        //isPlaying={isPlaying}
                         />
                     </div> ): null}
             </div>
@@ -93,3 +131,29 @@ const Show: React.FC<{ onPlay: () => void; onStop: () => void }> = ({ onPlay, on
       )
 }
 export default withLoading(Show);
+
+   // const [textColor, setTextColor] = useState('#FFFFFF'); // Default text color
+
+    // // Extract color palette from the image
+    // const { data, loading, error } = usePalette(show.image);
+  
+    // // Determine text color based on the average color of the image
+    // useEffect(() => {
+    //   if (!loading && !error && data && data.vibrant) {
+    //     const averageColor = data.vibrant;
+    //     setTextColor(getTextColor(averageColor));
+    //   }
+    // }, [loading, error, data]);
+  
+    // // Function to determine text color based on background color
+    // const getTextColor = (bgColor) => {
+    //   const brightness = calculateBrightness(bgColor);
+    //   return brightness > 0.5 ? '#000000' : '#FFFFFF'; // Choose black or white based on brightness
+    // };
+  
+    // // Function to calculate brightness
+    // const calculateBrightness = (color) => {
+    //   // Use the W3C formula for calculating relative luminance
+    //   const luminance = 0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2];
+    //   return luminance / 255;
+    // };

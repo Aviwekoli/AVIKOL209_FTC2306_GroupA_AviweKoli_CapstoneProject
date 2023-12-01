@@ -12,6 +12,8 @@ const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
 
  const fuseOptions = {
     keys: ['title'],
+    includeScore: true,
+    threshold: 0.4,
   };
 
   const fuse = new Fuse(shows, fuseOptions);
@@ -20,7 +22,7 @@ const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
     const query = e.target.value;
     setSearchQuery(query);
   
-    if (query == '') {
+    if (query.length === 0) {
       updateShows(shows);
     } else {
       const searchResults = fuse.search(query);

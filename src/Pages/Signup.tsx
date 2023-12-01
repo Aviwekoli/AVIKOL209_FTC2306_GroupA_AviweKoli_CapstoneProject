@@ -40,13 +40,29 @@ const Signup: React.FC = () => {
                 }
             )
             if(error) throw error;
+            if (data) {
+                // Insert user data into the 'users' table
+                const { data: userData, error: userError } = await supabase
+                  .from('users')
+                  .upsert([
+                    {
+                      full_name: formData.fullname,
+                      email: formData.email,
+                    },
+                  ]);
+          
+                if (userError) throw userError;
+          
+                // Access the user data if needed
+                console.log('User data:', userData);
+              }
             alert('Check your email inbox for verification link')
 
         } catch (error) {
             alert(error)
         }
     }
-
+    
     return (
         <> 
         <div className={loginStyles.login}>

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Home from './Pages/Home';
 import Show from './Pages/Show';
 import AudioPlayer from './Components/AudioPlayer'
-import { Routes, Route } from 'react-router-dom';
+import Favorites from './Pages/Favorites';
+import Playlist from './Pages/RecentlyPlayed';
+
 
 import Layout from './Components/Layout';
  
 const App: React.FC = () => {
-
   const [isPlaying, setIsPlaying] = useState(false);
 
 
@@ -21,32 +24,76 @@ const App: React.FC = () => {
    setIsPlaying(false);
  };
 
-  const [ token, setToken ] = useState<boolean>(false);
+ const [token, setToken] = useState<boolean | null>(null);
 
-  if(token) {
-    sessionStorage.setItem('token', JSON.stringify(token));
-  }
-
-useEffect(() => {
-  if(sessionStorage.getItem('token')){
-    const data = JSON.parse(sessionStorage.getItem('token'));
-    setToken(data)
-  }
-}, []);
+ // Error handling for setting token
+ try {
+   useEffect(() => {
+     if (token) {
+       sessionStorage.setItem('token', JSON.stringify(token));
+     }
+   }, [token]);
+ } catch (error) {
+   console.error('Error while setting token:', error);
+ }
+ 
+ // Error handling for retrieving token
+ useEffect(() => {
+   try {
+     const storedToken = sessionStorage.getItem('token');
+     if (storedToken) {
+       const data = JSON.parse(storedToken);
+       setToken(data);
+     }
+   } catch (error) {
+     console.error('Error while retrieving token:', error);
+   }
+ }, []);
+ 
+ // Additional error handling for invalid JSON parsing
+ // This ensures that if the stored data is not valid JSON, it won't crash the application
+ useEffect(() => {
+   try {
+     const storedToken = sessionStorage.getItem('token');
+     if (storedToken && !JSON.parse(storedToken)) {
+       console.error('Error: Invalid JSON format for stored token.');
+       sessionStorage.removeItem('token'); // Remove invalid token from storage
+       setToken(null); // Reset token state
+     }
+   } catch (error) {
+     console.error('Error while parsing stored token JSON:', error);
+   }
+ }, []);
 
 return (
   <>
     <Routes>
       <Route path={'/'} element={<Login setToken={setToken} />} />
       <Route path={'/signup'} element={<Signup />} />
+      <Route 
+          path={'/favorites'} 
+          element={
+            <Layout>
+              <Favorites />
+            </Layout>
+          }
+      />
+      <Route 
+          path={'/playlist'} 
+          element={
+            <Layout>
+              <Playlist />
+            </Layout>
+          }
+      />
       {/* {token ? <Route path={'/home'} element={<Home token={token} onPlay={handlePlay} onStop={handleStop}/>} /> : ''} */}
       {token && (
         <Route
           path={'/home'}
           element={
-            <Layout isPlaying={isPlaying}>
+            (<Layout isPlaying={isPlaying} token={token}> 
               <Home token={token} onPlay={handlePlay} onStop={handleStop} />
-            </Layout>
+            </Layout>)
           }
         />
       )}
@@ -54,7 +101,7 @@ return (
         path={'/show/:showId'}
         element={
           <Layout isPlaying={isPlaying}>
-            <Show onPlay={handlePlay} onStop={handleStop} isPlaying={isPlaying} />
+            <Show />
           </Layout>
         }
       />
