@@ -3,7 +3,7 @@ A Podcast App featuring a diverse range of shows, organized by seasons and episo
 
 ## :bust_in_silhouette: Author
 Aviwe Koli 
-AVIKOL209_FTC2306_GroupA_AviweKoli_IWA19
+AVIKOL209_FTC2306_GroupA_AviweKoli_CapstoneProject
 
 ## :computer: Technologies Used
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="CSS" width="40" height="40"><br>
