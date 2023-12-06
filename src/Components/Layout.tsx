@@ -2,26 +2,24 @@
 import React , { useState}from 'react';
 import Sidebar from './SiderBar';
 // import Navbar from './Navbar';
-import AudioPlayer from './AudioPlayer';
 import Audio from './Audio'
 
 interface LayoutProps {
-  isPlaying: boolean;
   children: React.ReactNode;
+  token: object;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, token }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
 
-  const handlePlay = (episodeInfo) => {
-    setSelectedEpisode(episodeInfo);
-  };
-  const handlePlayClick = (episodeInfo) => {
+  // const handlePlay = (episodeInfo) => {
+  //   setSelectedEpisode(episodeInfo);
+  // };
+  const handlePlayClick = (episodeInfo: object) => {
     console.log('Playing episode:', episodeInfo);
     setSelectedEpisode(episodeInfo);
     setIsPlaying(true);
-    // Perform any other actions related to playing the episode
   };
   console.log(selectedEpisode)
 

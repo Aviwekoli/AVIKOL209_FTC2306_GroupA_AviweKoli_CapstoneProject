@@ -67,6 +67,7 @@ const Login: React.FC = props => {
     //}
     return (
         <div className={loginStyles.home}> 
+        <h1>G-Waves</h1>
         <div className={loginStyles.login}>
             <p>Login</p>
             <form>

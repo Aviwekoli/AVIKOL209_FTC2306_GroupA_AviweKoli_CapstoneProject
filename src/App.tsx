@@ -5,9 +5,9 @@ import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Home from './Pages/Home';
 import Show from './Pages/Show';
-import AudioPlayer from './Components/AudioPlayer'
 import Favorites from './Pages/Favorites';
 import Playlist from './Pages/RecentlyPlayed';
+import Landing from './Pages/Landing';
 
 
 import Layout from './Components/Layout';
@@ -26,8 +26,7 @@ const App: React.FC = () => {
 
  const [token, setToken] = useState<boolean | null>(null);
 
- // Error handling for setting token
- try {
+try {
    useEffect(() => {
      if (token) {
        sessionStorage.setItem('token', JSON.stringify(token));
@@ -37,7 +36,6 @@ const App: React.FC = () => {
    console.error('Error while setting token:', error);
  }
  
- // Error handling for retrieving token
  useEffect(() => {
    try {
      const storedToken = sessionStorage.getItem('token');
@@ -49,16 +47,14 @@ const App: React.FC = () => {
      console.error('Error while retrieving token:', error);
    }
  }, []);
- 
- // Additional error handling for invalid JSON parsing
- // This ensures that if the stored data is not valid JSON, it won't crash the application
+
  useEffect(() => {
    try {
      const storedToken = sessionStorage.getItem('token');
      if (storedToken && !JSON.parse(storedToken)) {
        console.error('Error: Invalid JSON format for stored token.');
-       sessionStorage.removeItem('token'); // Remove invalid token from storage
-       setToken(null); // Reset token state
+       sessionStorage.removeItem('token');
+       setToken(null);
      }
    } catch (error) {
      console.error('Error while parsing stored token JSON:', error);
@@ -68,7 +64,8 @@ const App: React.FC = () => {
 return (
   <>
     <Routes>
-      <Route path={'/'} element={<Login setToken={setToken} />} />
+      <Route path={'/'} element= {< Landing/>} />
+      <Route path={'/login'} element={<Login setToken={setToken} />} />
       <Route path={'/signup'} element={<Signup />} />
       <Route 
           path={'/favorites'} 
@@ -86,7 +83,6 @@ return (
             </Layout>
           }
       />
-      {/* {token ? <Route path={'/home'} element={<Home token={token} onPlay={handlePlay} onStop={handleStop}/>} /> : ''} */}
       {token && (
         <Route
           path={'/home'}
@@ -107,20 +103,7 @@ return (
       />
     </Routes>
     {isPlaying && <AudioPlayer onStop={handleStop} />}
-    {/* < Layout /> */}
   </>
 );
 }
 export default App;
-
-// return (
-//   <>
-//     <Routes>
-//       <Route path={'/'} element={<Login setToken={setToken} />}/>
-//       {/* <Route path={'/'} element={<Home />}/> */}
-//       <Route path={'/signup'} element={<Signup />}/>
-//       {token? <Route path={'/home'} element={<Home token={token}/>}/> : ""}
-//       <Route path={'/show/:showId'} element={<Show />} />
-//     </Routes>
-//   </>
-// )

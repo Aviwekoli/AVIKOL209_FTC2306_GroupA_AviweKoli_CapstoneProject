@@ -6,12 +6,7 @@ import Navbar from '../Components/Navbar';
 import Slider from '../Components/Slider';
 import Filters from '../Components/Filters';
 import Shows from '../Components/Shows';
-import Logout from '../Components/Logout';
-import Search from '../Components/search';
-import Fav from '../Components/Favorites';
 import genresObject from '../assets/genres.ts';
-
-import homeStyles from './home.module.css';
 
 interface showsInfo {
     id: string;
@@ -77,22 +72,3 @@ const Home: React.FC = ({token}) => {
     )
 }
 export default withLoading(Home);
-
-            {/* <div className={homeStyles.sidebar}>
-                <div className={homeStyles.top}>
-                    <h2>EcoCast</h2>
-                    < Search shows={shows} updateShows={handleSearchUpdate} />
-                </div>
-                <div className={homeStyles.bottom}>
-                    <button> Go to Favorites</button>
-                    <button> Go to Recently Listened</button>
-                    { loading ? (
-                        < Loading />
-                    ) : (
-                        < Filters shows={shows} updateShows={updateShows}/>
-                    )
-
-                    }
-                    < Logout />
-                </div>
-            </div> */}

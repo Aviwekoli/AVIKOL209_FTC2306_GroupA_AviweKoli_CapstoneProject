@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import filtersStyles from './filterStyles.module.css';
 import genresObject from '../assets/genres.ts';
-import genresArr from '../assets/genresArr.ts'
 
 interface FiltersProps {
-  shows: showsInfo[];
-  updateShows: (sortedShows: showsInfo[]) => void;
+  shows: object;
+  updateShows: (sortedShows: object) => void;
 }
 
 const Filters: React.FC<FiltersProps> = ({ shows, updateShows }) => {
@@ -14,10 +13,10 @@ const Filters: React.FC<FiltersProps> = ({ shows, updateShows }) => {
   
   const [sortBy, setSortBy] = useState<string | null>('');
 
-  console.log(shows)
+  console.log(shows, sortBy, filteredShows)
 
   const handleSort = (sortType: string) => {
-    let sorted: showsInfo[] = [];
+    let sorted;
     switch (sortType) {
       case 'all':
         sorted = [...shows].map(a=> a);
@@ -42,7 +41,7 @@ const Filters: React.FC<FiltersProps> = ({ shows, updateShows }) => {
     updateShows(sorted);
   };
   
-    const handleGenreFilter = (selectedGenre) => {
+    const handleGenreFilter = (selectedGenre: string) => {
       let filtered;
   
       if (selectedGenre === "All") {
@@ -74,7 +73,7 @@ const Filters: React.FC<FiltersProps> = ({ shows, updateShows }) => {
           <button className={filtersStyles.btn} onClick={() => handleSort('old')}>Least Recent</button>
         </div>
         <h2>Select Genre:</h2>
-        <select onClick={(e) => handleGenreFilter(e.target.value)}>
+        <select onClick={(e: Event<HTMLButtonElement>) => handleGenreFilter(e.target.value)}>
         {Object.entries(genresObject).map(([key, value]) => (
           <option key={key} value={value}>
             {value}

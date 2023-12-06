@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate }  from 'react-router-dom';
 
+interface showsProps {
+    shows: object;
+    token: object;
+}
 import showsStyle from './showsStyles.module.css';
 
-const Shows: React.FC = ( {shows, token}) => {
+const Shows: React.FC<showsProps> = ( {shows, token}) => {
 
     const navigate = useNavigate();
 

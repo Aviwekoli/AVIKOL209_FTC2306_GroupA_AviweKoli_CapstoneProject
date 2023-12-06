@@ -65,40 +65,43 @@ const Signup: React.FC = () => {
     
     return (
         <> 
-        <div className={loginStyles.login}>
-            <p>Sign Up</p>
-            <form>
-                <div className={loginStyles.user}>
-                    <input required="" name="fullname" type="text"
-                    onChange={handleChange}
-                    />
-                    <label>Full Name</label>
-                </div>
+        <div className={loginStyles.home}>
+            <h1>G-Waves</h1>
+            <div className={loginStyles.login}>
+                <p>Sign Up</p>
+                <form>
+                    <div className={loginStyles.user}>
+                        <input required="" name="fullname" type="text"
+                        onChange={handleChange}
+                        />
+                        <label>Full Name</label>
+                    </div>
 
-                <div className={loginStyles.user}>
-                    <input required="" name="email" type="text"
-                    onChange={handleChange}
-                    />
-                    <label>Email</label>
-                </div>
+                    <div className={loginStyles.user}>
+                        <input required="" name="email" type="text"
+                        onChange={handleChange}
+                        />
+                        <label>Email</label>
+                    </div>
 
-                <div className={loginStyles.user}>
-                    <input required="" name="password" type="password"
-                    onChange={handleChange}
-                    />
-                    <label>Password</label>
-                </div>
+                    <div className={loginStyles.user}>
+                        <input required="" name="password" type="password"
+                        onChange={handleChange}
+                        />
+                        <label>Password</label>
+                    </div>
 
-                <a href="" type="submit"
-                onClick={handleSubmit}>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                Sign Up
-                </a>
-            </form>
-            <p>Already have an account? <Link to='/'><a href="" className={loginStyles.a2}>Log in!</a></Link></p>
+                    <a href="" type="submit"
+                    onClick={handleSubmit}>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    Sign Up
+                    </a>
+                </form>
+                <p>Already have an account? <Link to='/login'><a href="" className={loginStyles.a2}>Log in!</a></Link></p>
+            </div>
         </div>
         </>
     )

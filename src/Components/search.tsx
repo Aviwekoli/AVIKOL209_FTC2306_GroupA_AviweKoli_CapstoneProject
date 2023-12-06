@@ -3,8 +3,8 @@ import Fuse from 'fuse.js';
 import searchStyles from './searchStyles.module.css'
 
 interface SearchProps {
-    shows: showsInfo[];
-    updateShows: (sortedShows: showsInfo[]) => void;
+    shows: object;
+    updateShows: (sortedShows:object) => void;
 }
 
 const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
@@ -18,7 +18,7 @@ const Search: React.FC<SearchProps> = ({ shows, updateShows }) => {
 
   const fuse = new Fuse(shows, fuseOptions);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: Event<HTMLButtonElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
   
