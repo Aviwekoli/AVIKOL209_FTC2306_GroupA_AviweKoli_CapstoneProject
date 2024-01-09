@@ -5,7 +5,7 @@ A Podcast App featuring a diverse range of shows, organized by seasons and episo
 Aviwe Koli 
 AVIKOL209_FTC2306_GroupA_AviweKoli_CapstoneProject
 
-## :computer: Technologies Used
+## :computer: Tech Stack
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="CSS" width="40" height="40"><br>
 <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" alt="CSS" width="40" height="40"><br>
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="CSS" width="40" height="40"><br>
